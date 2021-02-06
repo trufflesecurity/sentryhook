@@ -2,6 +2,7 @@ package sentryhook
 
 import (
 	"reflect"
+	"time"
 
 	"github.com/getsentry/sentry-go"
 	"github.com/sirupsen/logrus"
@@ -85,6 +86,8 @@ func (hook Hook) Fire(entry *logrus.Entry) error {
 	hook.converter(entry, event, hook.hub)
 
 	hook.hub.CaptureEvent(event)
+
+	hook.hub.Flush(3 * time.Second)
 
 	return nil
 }
